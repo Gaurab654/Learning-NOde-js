@@ -1,0 +1,25 @@
+{
+  "name": "8airbnbstyling",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"nodemon app.js\" \"npm run tailwind\"",
+    "tailwind": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "body-parser": "^2.2.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "routes": "^2.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "tailwindcss": "^4.3.0"
+  }
+}
