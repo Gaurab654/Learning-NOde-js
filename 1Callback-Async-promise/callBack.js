@@ -7,6 +7,7 @@ function getData(dataId, getNextData) {
     }
   }, 2000);
 }
+//call back hell condition
 console.log("fetching first Data");
 getData(1, () => {
   console.log("fetching second Data");
