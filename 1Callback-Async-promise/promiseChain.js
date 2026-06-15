@@ -1,10 +1,8 @@
-function getData(dataId, getNextData) {
+function getData(dataId) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log("data", dataId);
-      if (getNextData) {
-        getNextData();
-      }
+      resolve("success");
     }, 2000);
   });
 }
