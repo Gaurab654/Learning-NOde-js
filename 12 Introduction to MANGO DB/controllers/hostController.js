@@ -18,6 +18,19 @@ exports.postAddHome = async (req, res, next) => {
   //  res.redirect("/host/host-home-list");
 };
 
+exports.getHostHomes = async (req, res, next) => {
+  try {
+    const registeredHomes = await Home.fetchAll();
+
+    res.render("host/host-home-list", {
+      registeredHomes: registeredHomes,
+      pageTitle: "Host Home List",
+      currentPage: "host-home-list",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to airbnb",
@@ -30,7 +43,7 @@ exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
 
-  Home.findById(homeId, (home) => {
+  Home.findById(homeId).then((home) => {
     if (!home) {
       console.log("Home not found for editing.");
       return res.redirect("/host/host-home-list");
@@ -45,31 +58,24 @@ exports.getEditHome = (req, res, next) => {
   });
 };
 
-exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll((registeredHomes) =>
-    res.render("host/host-home-list", {
-      registeredHomes: registeredHomes,
-      pageTitle: "Host Homes List",
-      currentPage: "host-homes",
-    }),
-  );
-};
-
 exports.postEditHome = (req, res, next) => {
   const { id, houseName, price, location, rating, photoUrl } = req.body;
   const home = new Home(houseName, price, location, rating, photoUrl);
-  home.id = id;
-  home.save();
+  home._id = id;
+  home.save().then((result) => {
+    console.log(result);
+  });
   res.redirect("/host/host-home-list");
 };
 
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
   console.log("Came to delete ", homeId);
-  Home.deleteById(homeId, (error) => {
-    if (error) {
+  Home.deleteById(homeId)
+    .then(() => {
+      res.redirect("/host/host-home-list");
+    })
+    .catch((error) => {
       console.log("Error while deleting ", error);
-    }
-    res.redirect("/host/host-home-list");
-  });
+    });
 };
